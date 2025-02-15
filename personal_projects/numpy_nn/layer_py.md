@@ -60,6 +60,22 @@ f_3: din = \frac{\partial y_3}{\partial y_2}
 \frac{\partial y_2}{\partial y_1}
 $$
 
+
+For all of our backwards gradients, we assume that the first layer is some loss function that returns a scalar, so that the the first node in the backwards graph always returns:
+$$
+\frac{\partial L}{\partial Y}
+$$
+Because $L$ is a scalar, the quantity $\partial L / \partial Y$ is a matrix of the same shape as $Y$.
+
+For example, if we imagine that the matrix $Y$ is of shape `[M=2, C=2]` then we can write the expression as:
+$$
+\frac{\partial L}{\partial Y} = \begin{bmatrix}
+ \frac{\partial L}{\partial y_{11}} && \frac{\partial L}{y_{12}} \\
+ \frac{\partial L}{\partial y_{21}} && \frac{\partial L}{y_{22}}
+\end{bmatrix}
+$$ 
+
+All of the quantities calculated will be based on this, for example $\partial L / \partial W$. Some of the intermediate quantities will be Jacobians (i.e. matrices with matrix derivatives) but we can avoid this with some tricks as will illustrate in other parts of the documentation.
 ## Other Interfaces
 
 These two functions make up the bulk of the functionality of the `Layer` class. The thing to call out is the `Cache` dataclass `Cache = dict[str, np.ndarray]` which is the way we cache out information for the backwards pass.
